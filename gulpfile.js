@@ -28,12 +28,12 @@ gulp.task('css', function () {
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer('last 4 version'))
-    .pipe(gulp.dest('app/assets/css'))
+    .pipe(gulp.dest('dist/assets/css'))
     .pipe(cssnano())
     .pipe(rename({ suffix: '.min' }))
     .pipe(header(banner, { package : package }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('app/assets/css'))
+    .pipe(gulp.dest('dist/assets/css'))
     .pipe(browserSync.reload({stream:true}));
 });
 
@@ -43,19 +43,19 @@ gulp.task('js',function(){
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(header(banner, { package : package }))
-    .pipe(gulp.dest('app/assets/js'))
+    .pipe(gulp.dest('dist/assets/js'))
     .pipe(uglify())
     .pipe(header(banner, { package : package }))
     .pipe(rename({ suffix: '.min' }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('app/assets/js'))
+    .pipe(gulp.dest('dist/assets/js'))
     .pipe(browserSync.reload({stream:true, once: true}));
 });
 
 gulp.task('browser-sync', function() {
     browserSync.init(null, {
         server: {
-            baseDir: "app"
+            baseDir: "dist"
         }
     });
 });
@@ -66,5 +66,5 @@ gulp.task('bs-reload', function () {
 gulp.task('default', ['css', 'js', 'browser-sync'], function () {
     gulp.watch("src/scss/*/*.scss", ['css']);
     gulp.watch("src/js/*.js", ['js']);
-    gulp.watch("app/*.html", ['bs-reload']);
+    gulp.watch("dist/*.html", ['bs-reload']);
 });
